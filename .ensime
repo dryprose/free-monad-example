@@ -1,0 +1,23 @@
+(
+ :root-dir "/Users/am/w/dryprose/scala-free"
+ :cache-dir "/Users/am/w/dryprose/scala-free/.ensime_cache"
+ :name "scala-free"
+ 
+ :java-flags ("-Xms512M" "-Xmx1536M" "-Xss1M" "-XX:+CMSClassUnloadingEnabled")
+ :reference-source-roots nil
+ :scala-version "2.11.2"
+ :compiler-args nil
+ 
+ :subprojects ((
+   :name "scala-free"
+   :module-name "scala-free"
+   :source-roots ("/Users/am/w/dryprose/scala-free/src/main/scala" "/Users/am/w/dryprose/scala-free/src/main/java" "/Users/am/w/dryprose/scala-free/src/test/scala" "/Users/am/w/dryprose/scala-free/src/test/java")
+   :target "/Users/am/w/dryprose/scala-free/target/scala-2.11/classes"
+   :test-target "/Users/am/w/dryprose/scala-free/target/scala-2.11/test-classes"
+   :depends-on-modules nil
+   :compile-deps ("/Users/am/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.11.2.jar")
+   :runtime-deps nil
+   :test-deps nil
+   :reference-source-roots ("/Users/am/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.2-sources.jar")))
+ 
+)
