@@ -1,3 +1,4 @@
+object FreeExample extends FreeExample
 trait FreeExample {
   sealed trait Free[F[_],A] {
     def pure(a: A): Free[F,A] = Value(a)
@@ -71,6 +72,34 @@ trait FreeExample {
   }
 
   prog.foldMap(ProdConvo)
+
+  type CannedResponses = Map[String,String]
+  case class TestConvoLog[A](a: A, convo: List[String])
+  type ConvoTester[A] = CannedResponses => TestConvoLog[A]
+
+  object TestConvo extends (ConvoOp ~> ConvoTester) {
+    def apply[A](fa: ConvoOp[A]): ConvoTester[A] = fa match {
+      case Ask(s) =>
+        (m) => {
+          val response = m.getOrElse(s, "I don't know, man.")
+          TestConvoLog(response, List(s, response))
+        }
+      case Tell(s) =>
+        (m) => TestConvoLog((), List(s))
+    }
+  }
+
+  implicit val ConvoTesterMonad: Monad[ConvoTester] = new Monad[ConvoTester] {
+    def pure[A](a: A): ConvoTester[A] = (_) => TestConvoLog(a, List())
+    def flatMap[A,B](ma: ConvoTester[A])(k: A => ConvoTester[B]) = (m) => {
+      val TestConvoLog(a, log1) = ma(m)
+      val TestConvoLog(b, log2) = k(a)(m)
+      TestConvoLog(b, log1 ++ log2)
+    }
+  }
+
+  val cannedResponses = Map(("What's your favorite language?" -> "Haskell"))
+  prog.foldMap(TestConvo)
 }
 
 object Example extends App with FreeExample
